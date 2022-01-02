@@ -20,7 +20,7 @@ export default function middleware(req: NextRequest) {
 
   const OS_version = userAgent?.os.version || "";
 
-  const browser = userAgent?.browser.name || "";
+  const browser = userAgent?.browser.name || "Non identified";
 
   url.searchParams.set("country", country);
   url.searchParams.set("ip", ip || "127.0.0.1");
