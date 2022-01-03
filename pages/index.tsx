@@ -30,6 +30,7 @@ const Home: NextPage<{
           objectFit="cover"
           className="opacity-75"
           quality={100}
+          priority
         />
         <div className="block p-4 w-4/5 md:w-1/2 mx-auto space-y-2 shadow rounded absolute">
           <p>Request User Information</p>
