@@ -22,7 +22,7 @@ const Home: NextPage<{
       <Head>
         <title>Edge Functions</title>
       </Head>
-      <div className="flex w-full min-h-screen justify-center items-center overflow-hidden fixed inset-0">
+      <div className="flex w-full min-h-screen p-2 justify-center items-center overflow-hidden relative fixed inset-0">
         <Image
           alt="map"
           src={map}
@@ -43,6 +43,14 @@ const Home: NextPage<{
             Operating System: {os} {os_version}
           </p>
           <p>Browser: {browser}</p>
+        </div>
+        <div className="flex w-4/5 md:w-1/2 mx-auto mb-4 justify-between items-center absolute bottom-0">
+          <button className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300">
+            Block IP Address
+          </button>
+          <button className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300">
+            Block Country
+          </button>
         </div>
       </div>
     </>
