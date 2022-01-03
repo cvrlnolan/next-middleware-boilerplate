@@ -6,7 +6,7 @@ export default function middleware(req: NextRequest) {
 
   const { ip, geo, nextUrl: url, ua: userAgent } = req;
 
-  console.log(userAgent);
+//   console.log(userAgent);
 
   const country = geo?.country || "Namek";
 

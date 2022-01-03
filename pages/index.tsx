@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import map from "../public/world.svg";
+import Image from "next/image";
 
 export const getServerSideProps = ({ query }: any) => ({
   props: query,
@@ -20,8 +22,16 @@ const Home: NextPage<{
       <Head>
         <title>Edge Functions</title>
       </Head>
-      <div className="flex w-full min-h-screen justify-center items-center">
-        <div className="block w-1/2 mx-auto space-y-2">
+      <div className="flex w-full min-h-screen justify-center items-center overflow-hidden fixed inset-0">
+        <Image
+          alt="map"
+          src={map}
+          layout="fill"
+          objectFit="cover"
+          className="opacity-75"
+          quality={100}
+        />
+        <div className="block p-4 w-4/5 md:w-1/2 mx-auto space-y-2 shadow rounded absolute">
           <p>Request User Information</p>
           <p>Country: {country}</p>
           <p>Region: {region}</p>
