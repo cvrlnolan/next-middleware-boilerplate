@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   try {
     getIPAddresses();
-    res.status(200).end();
+    res.status(200).json({ status: "OK" });
   } catch (e: any) {
     console.log(e.message);
     res.status(400).end();

@@ -21,13 +21,13 @@ const Home: NextPage<{
   browser: string;
 }> = ({ country, ip, region, city, ua, os, os_version, browser }) => {
   useEffect(() => {
-    async function fetchData() {
-      try {
-        await axios.get("/api/fetchIPs");
-      } catch (e: any) {
-        console.log(e.message);
-      }
-    }
+    // async function fetchData() {
+    //   try {
+    //     await axios.get("/api/fetchIPs");
+    //   } catch (e: any) {
+    //     console.log(e.message);
+    //   }
+    // }
     // fetchData();
     registerIP(ip);
   }, [ip]);
@@ -38,22 +38,17 @@ const Home: NextPage<{
       .update({ blocked: true })
       .eq("ip_address", ip)
       .single();
-    if (error) console.log(error);
+    if (error) console.log(error.message);
     console.log(ip_address);
   };
 
   const registerIP = async (ip: string) => {
-    try {
-      let { data: ip_address, error } = await supabase
-        .from("request_ip_address")
-        .upsert({ ip_address: ip }, { onConflict: "ip_address" })
-        .single();
-      if (error?.code === "23505") {
-        console.log("IP already exists");
-        return;
-      }
-      console.log(ip_address);
-    } catch (e: any) {}
+    let { data: ip_address, error } = await supabase
+      .from("request_ip_address")
+      .upsert({ ip_address: ip }, { onConflict: "ip_address" })
+      .single();
+    if (error) console.log(error.message);
+    console.log(ip_address);
   };
 
   return (

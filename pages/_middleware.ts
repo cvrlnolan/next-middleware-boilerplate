@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { generateIP } from "lib/utils/helper";
+import { generateIP, middlewareBlockedIPs } from "lib/utils/helper";
 
 export default function middleware(req: NextRequest) {
   console.log("Running at the Edge !");
@@ -8,6 +8,7 @@ export default function middleware(req: NextRequest) {
   const { ip, geo, nextUrl: url, ua: userAgent } = req;
 
   //   console.log(userAgent);
+  middlewareBlockedIPs();
 
   const country = geo?.country || "Namek";
 
