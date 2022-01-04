@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import map from "public/world.svg";
 import Image from "next/image";
-import axios from "axios";
 import { supabase } from "lib/utils/supabaseClient";
 
 export const getServerSideProps = ({ query }: any) => ({
@@ -21,14 +20,6 @@ const Home: NextPage<{
   browser: string;
 }> = ({ country, ip, region, city, ua, os, os_version, browser }) => {
   useEffect(() => {
-    // async function fetchData() {
-    //   try {
-    //     await axios.get("/api/fetchIPs");
-    //   } catch (e: any) {
-    //     console.log(e.message);
-    //   }
-    // }
-    // fetchData();
     registerIP(ip);
   }, [ip]);
 

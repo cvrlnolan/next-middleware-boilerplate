@@ -1,17 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 
-const Test: NextPage = () => {
+const Blocked: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Edge Functions | Rewrite</title>
+        <title>Edge Functions | Blocked IP</title>
       </Head>
       <div className="flex w-full min-h-screen justify-center items-center">
-        <p>Test Edge Function Page</p>
+        <p>Your IP Address an been banned from this website.</p>
       </div>
     </>
   );
 };
 
-export default Test;
+export default Blocked;

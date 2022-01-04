@@ -1,14 +1,25 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { generateIP, middlewareBlockedIPs } from "lib/utils/helper";
+import {
+  generateIP,
+  middlewareBlockedIPs,
+  searchBlockedIP,
+} from "lib/utils/helper";
+import { IP_Address } from "lib/utils/types";
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   console.log("Running at the Edge !");
 
   const { ip, geo, nextUrl: url, ua: userAgent } = req;
 
   //   console.log(userAgent);
-  middlewareBlockedIPs();
+  let blocked_ips: IP_Address[] = await middlewareBlockedIPs();
+
+  let blocked = searchBlockedIP(ip || "127.0.0.1", blocked_ips);
+
+  if (blocked) {
+    return NextResponse.rewrite("/blocked");
+  }
 
   const country = geo?.country || "Namek";
 
