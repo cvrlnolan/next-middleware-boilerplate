@@ -34,7 +34,7 @@ const Home: NextPage<{
   const blockIP = async (ip: string) => {
     let { data: ip_address, error } = await supabase
       .from("request_ip_address")
-      .upsert({ ip_address: ip, blocked: true })
+      .upsert({ ip_address: ip, blocked: true }, { onConflict: "ip_address" })
       .single();
     if (error) console.log(error);
     console.log(ip_address);
