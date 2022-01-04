@@ -28,25 +28,32 @@ const Home: NextPage<{
         console.log(e.message);
       }
     }
-    fetchData();
-  }, []);
+    // fetchData();
+    registerIP(ip);
+  }, [ip]);
 
   const blockIP = async (ip: string) => {
     let { data: ip_address, error } = await supabase
       .from("request_ip_address")
-      .upsert({ ip_address: ip, blocked: true }, { onConflict: "ip_address" })
+      .update({ blocked: true })
+      .eq("ip_address", ip)
       .single();
     if (error) console.log(error);
     console.log(ip_address);
   };
 
   const registerIP = async (ip: string) => {
-    let { data: ip_address, error } = await supabase
-      .from("request_ip_address")
-      .insert({ ip_address: ip, blocked: true })
-      .single();
-    if (error) console.log(error);
-    console.log(ip_address);
+    try {
+      let { data: ip_address, error } = await supabase
+        .from("request_ip_address")
+        .upsert({ ip_address: ip }, { onConflict: "ip_address" })
+        .single();
+      if (error?.code === "23505") {
+        console.log("IP already exists");
+        return;
+      }
+      console.log(ip_address);
+    } catch (e: any) {}
   };
 
   return (
