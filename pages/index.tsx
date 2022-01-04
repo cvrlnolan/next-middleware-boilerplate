@@ -1,7 +1,10 @@
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import map from "../public/world.svg";
+import map from "public/world.svg";
 import Image from "next/image";
+import axios from "axios";
+import { supabase } from "lib/utils/supabaseClient";
 
 export const getServerSideProps = ({ query }: any) => ({
   props: query,
@@ -17,6 +20,35 @@ const Home: NextPage<{
   os_version: string;
   browser: string;
 }> = ({ country, ip, region, city, ua, os, os_version, browser }) => {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        await axios.get("/api/fetchIPs");
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const blockIP = async (ip: string) => {
+    let { data: ip_address, error } = await supabase
+      .from("request_ip_address")
+      .upsert({ ip_address: ip, blocked: true })
+      .single();
+    if (error) console.log(error);
+    console.log(ip_address);
+  };
+
+  const registerIP = async (ip: string) => {
+    let { data: ip_address, error } = await supabase
+      .from("request_ip_address")
+      .insert({ ip_address: ip, blocked: true })
+      .single();
+    if (error) console.log(error);
+    console.log(ip_address);
+  };
+
   return (
     <>
       <Head>
@@ -45,10 +77,16 @@ const Home: NextPage<{
           <p>Browser: {browser}</p>
         </div>
         <div className="flex w-4/5 md:w-1/2 mx-auto mb-4 justify-between items-center absolute bottom-0">
-          <button className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300">
+          <button
+            className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300"
+            onClick={() => blockIP(ip)}
+          >
             Block IP Address
           </button>
-          <button className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300">
+          <button
+            className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300"
+            onClick={() => console.log("clicked")}
+          >
             Block Country
           </button>
         </div>

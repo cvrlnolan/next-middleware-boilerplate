@@ -1,12 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { generateIP } from "lib/utils/helper";
 
 export default function middleware(req: NextRequest) {
   console.log("Running at the Edge !");
 
   const { ip, geo, nextUrl: url, ua: userAgent } = req;
 
-//   console.log(userAgent);
+  //   console.log(userAgent);
 
   const country = geo?.country || "Namek";
 
@@ -23,7 +24,7 @@ export default function middleware(req: NextRequest) {
   const browser = userAgent?.browser.name || "Non identified";
 
   url.searchParams.set("country", country);
-  url.searchParams.set("ip", ip || "127.0.0.1");
+  url.searchParams.set("ip", ip || generateIP()); // Generate a random IP Address if running on localhost
   url.searchParams.set("region", region);
   url.searchParams.set("city", city);
   url.searchParams.set("ua", agent);
