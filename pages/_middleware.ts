@@ -12,13 +12,16 @@ export default async function middleware(req: NextRequest) {
 
   const { ip, geo, nextUrl: url, ua: userAgent } = req;
 
-  //   console.log(userAgent);
+  let randomIP = generateIP();
+
   let blocked_ips: IP_Address[] = await middlewareBlockedIPs();
 
-  let blocked = searchBlockedIP(ip || "127.0.0.1", blocked_ips);
+  let blocked = searchBlockedIP(ip || randomIP, blocked_ips);
 
   if (blocked) {
-    return NextResponse.rewrite("/blocked");
+    url.pathname = "/blocked";
+    url.searchParams.set("ip", ip || randomIP);
+    return NextResponse.rewrite(url);
   }
 
   const country = geo?.country || "Namek";
@@ -36,7 +39,7 @@ export default async function middleware(req: NextRequest) {
   const browser = userAgent?.browser.name || "Non identified";
 
   url.searchParams.set("country", country);
-  url.searchParams.set("ip", ip || generateIP()); // Generate a random IP Address if running on localhost
+  url.searchParams.set("ip", ip || randomIP); // Generate a random IP Address if running on localhost
   url.searchParams.set("region", region);
   url.searchParams.set("city", city);
   url.searchParams.set("ua", agent);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import map from "public/world.svg";
@@ -19,11 +19,14 @@ const Home: NextPage<{
   os_version: string;
   browser: string;
 }> = ({ country, ip, region, city, ua, os, os_version, browser }) => {
+  let [blocked, setBlocked] = useState<boolean>(false);
+
   useEffect(() => {
     registerIP(ip);
   }, [ip]);
 
   const blockIP = async (ip: string) => {
+    setBlocked(false);
     let { data: ip_address, error } = await supabase
       .from("request_ip_address")
       .update({ blocked: true })
@@ -31,6 +34,7 @@ const Home: NextPage<{
       .single();
     if (error) console.log(error.message);
     console.log(ip_address);
+    setBlocked(true);
   };
 
   const registerIP = async (ip: string) => {
@@ -58,6 +62,11 @@ const Home: NextPage<{
           priority
         />
         <div className="block p-4 w-4/5 md:w-1/2 mx-auto space-y-2 shadow rounded absolute">
+          {blocked && (
+            <p className="text-red-600">
+              This IP Address has been blocked successfully
+            </p>
+          )}
           <p>Request User Information</p>
           <p>Country: {country}</p>
           <p>Region: {region}</p>
@@ -78,7 +87,7 @@ const Home: NextPage<{
           </button>
           <button
             className="px-2 py-1.5 bg-sky-200 rounded shadow appearance-none focus:ring-2 focus:ring-offset-2 focus-ring-sky-100 hover:bg-sky-300 transition duration-300"
-            onClick={() => console.log("clicked")}
+            onClick={() => console.log("Not yet implemented")}
           >
             Block Country
           </button>
